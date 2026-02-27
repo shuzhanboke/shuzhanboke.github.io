@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ROS系统搭建小乌龟：rosrun turtlesim turtlesim_node 小乌龟运动控制：rosrun turtlesim turtle_teleop_key cmd_vel:&#x3D;&#x2F;turtle1&#x2F;cmd_vel 小乌龟节点监控：rostopic echo &#x2F;turtle1&#x2F;pose 控制一个小乌龟一直转圈：rostopic pub -r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS系统环境搭建">
+<meta property="og:url" content="https://shuzhanboke.github.io/2024/07/15/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/ROS%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ROS系统搭建小乌龟：rosrun turtlesim turtlesim_node 小乌龟运动控制：rosrun turtlesim turtle_teleop_key cmd_vel:&#x3D;&#x2F;turtle1&#x2F;cmd_vel 小乌龟节点监控：rostopic echo &#x2F;turtle1&#x2F;pose 控制一个小乌龟一直转圈：rostopic pub -r">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shuzhanboke.github.io/img/robot.png">
+<meta property="article:published_time" content="2024-07-15T02:41:19.000Z">
+<meta property="article:modified_time" content="2025-07-15T09:12:48.468Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="ROS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shuzhanboke.github.io/img/robot.png">
+  
+  
+  
+  <title>ROS系统环境搭建 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"shuzhanboke.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>不记来时路,自嫌衣上尘</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ROS系统环境搭建"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-15 10:41" pubdate>
+          2024年7月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          517 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ROS系统环境搭建</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ROS系统搭建"><a href="#ROS系统搭建" class="headerlink" title="ROS系统搭建"></a>ROS系统搭建</h1><h2 id="小乌龟："><a href="#小乌龟：" class="headerlink" title="小乌龟："></a>小乌龟：</h2><p>rosrun turtlesim turtlesim_node</p>
+<h2 id="小乌龟运动控制："><a href="#小乌龟运动控制：" class="headerlink" title="小乌龟运动控制："></a>小乌龟运动控制：</h2><p>rosrun turtlesim turtle_teleop_key cmd_vel:&#x3D;&#x2F;turtle1&#x2F;cmd_vel</p>
+<h2 id="小乌龟节点监控："><a href="#小乌龟节点监控：" class="headerlink" title="小乌龟节点监控："></a>小乌龟节点监控：</h2><p>rostopic echo &#x2F;turtle1&#x2F;pose</p>
+<h2 id="控制一个小乌龟一直转圈："><a href="#控制一个小乌龟一直转圈：" class="headerlink" title="控制一个小乌龟一直转圈："></a>控制一个小乌龟一直转圈：</h2><p>rostopic pub -r 10 &#x2F;new_turtle&#x2F;cmd_vel geometry_msgs&#x2F;Twist “linear:<br>  x: 1.0<br>  y: 0.0<br>  z: 0.0<br>angular:<br>  x: 0.0<br>  y: 0.0<br>  z: 1.0”</p>
+<h2 id="制造一个新的小乌龟："><a href="#制造一个新的小乌龟：" class="headerlink" title="制造一个新的小乌龟："></a>制造一个新的小乌龟：</h2><p>rosservice call &#x2F;spawn 3 3 0.2 “new_turtle”</p>
+<h2 id="显示ros系统拓朴关系："><a href="#显示ros系统拓朴关系：" class="headerlink" title="显示ros系统拓朴关系："></a>显示ros系统拓朴关系：</h2><p>rqt_graph</p>
+<h2 id="启动ros"><a href="#启动ros" class="headerlink" title="启动ros"></a>启动ros</h2><p>roscore</p>
+<h2 id="启动机器人仿真系统"><a href="#启动机器人仿真系统" class="headerlink" title="启动机器人仿真系统"></a>启动机器人仿真系统</h2><p>roslaunch urdf01_rviz car.launch</p>
+<h2 id="ignition-gazebo加载world文件"><a href="#ignition-gazebo加载world文件" class="headerlink" title="ignition gazebo加载world文件"></a>ignition gazebo加载world文件</h2><p>LIBGL_ALWAYS_SOFTWARE&#x3D;0 MESA_GL_VERSION_OVERRIDE&#x3D;4.5 ign gazebo -v 4 -r ogre worlds&#x2F;factory.world</p>
+<h2 id="unbuntu升级"><a href="#unbuntu升级" class="headerlink" title="unbuntu升级"></a>unbuntu升级</h2><p>wget <a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/dist-upgrader-all/current/jammy.tar.gz">http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/dist-upgrader-all/current/jammy.tar.gz</a> tar -xzf jammy.tar.gz </p>
+<p>sudo .&#x2F;jammy –frontend&#x3D;DistUpgradeViewGtk3</p>
+<h1 id="ROS2"><a href="#ROS2" class="headerlink" title="ROS2"></a>ROS2</h1><h2 id="激活环境变量："><a href="#激活环境变量：" class="headerlink" title="激活环境变量："></a>激活环境变量：</h2><p>source &#x2F;opt&#x2F;ros&#x2F;humble&#x2F;setup.bash</p>
+<h2 id="机器人模型启动："><a href="#机器人模型启动：" class="headerlink" title="机器人模型启动："></a>机器人模型启动：</h2><p>临时制定模型：</p>
+<p>export TURTLEBOT3_MODEL&#x3D;waffle</p>
+<p>永久指定模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;export TURTLEBOT3_MODEL=waffle&quot;</span> &gt;&gt; ~/.bashrc<br><span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>模型渲染：</p>
+<p>ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py</p>
+<h2 id="键盘控制机器人："><a href="#键盘控制机器人：" class="headerlink" title="键盘控制机器人："></a>键盘控制机器人：</h2><p>ros2 run turtlebot3_teleop teleop_keyboard</p>
+<h2 id="开启导航，开始建图"><a href="#开启导航，开始建图" class="headerlink" title="开启导航，开始建图"></a>开启导航，开始建图</h2><p>ros2 run slam_toolbox async_slam_toolbox_node   –ros-args   –params-file ~&#x2F;slam_params.yaml   -p use_sim_time:&#x3D;true   -p scan_topic:&#x3D;&#x2F;scan   -p mode:&#x3D;mapping</p>
+<h2 id="启动slam节点"><a href="#启动slam节点" class="headerlink" title="启动slam节点"></a>启动slam节点</h2><p>ros2 launch turtlebot3_cartographer cartographer.launch.py \  use_sim_time:&#x3D;true \  publish_map_updates:&#x3D;true</p>
+<h2 id="手动启动slam节点（非常重要）："><a href="#手动启动slam节点（非常重要）：" class="headerlink" title="手动启动slam节点（非常重要）："></a>手动启动slam节点（非常重要）：</h2><p>ros2 launch slam_toolbox online_async_launch.py</p>
+<h2 id="rviz2配置"><a href="#rviz2配置" class="headerlink" title="rviz2配置"></a>rviz2配置</h2><p>ros2 run rviz2 rviz2 -d ~&#x2F;turtlebot3_nav.rviz</p>
+<h2 id="开始自主导航地图"><a href="#开始自主导航地图" class="headerlink" title="开始自主导航地图"></a>开始自主导航地图</h2><p>ros2 launch turtlebot3_navigation2 navigation2.launch.py \  use_sim_time:&#x3D;false \  map:&#x3D;~&#x2F;turtlebot3_map.yaml</p>
+<h2 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h2><h3 id="终端1：启动-Gazebo-仿真环境（必须首先运行）"><a href="#终端1：启动-Gazebo-仿真环境（必须首先运行）" class="headerlink" title="# 终端1：启动 Gazebo 仿真环境（必须首先运行）"></a># 终端1：启动 Gazebo 仿真环境（必须首先运行）</h3><p> ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py use_sim_time:&#x3D;True </p>
+<h3 id="终端2：启动导航-SLAM（注意-use-sim-time-必须与-Gazebo-一致）"><a href="#终端2：启动导航-SLAM（注意-use-sim-time-必须与-Gazebo-一致）" class="headerlink" title="#终端2：启动导航 + SLAM（注意 use_sim_time 必须与 Gazebo 一致）"></a>#终端2：启动导航 + SLAM（注意 use_sim_time 必须与 Gazebo 一致）</h3><p>ros2 launch turtlebot3_navigation2 navigation2.launch.py use_sim_time:&#x3D;True slam:&#x3D;True</p>
+<h3 id="终端3：启动slam导航节点"><a href="#终端3：启动slam导航节点" class="headerlink" title="#终端3：启动slam导航节点"></a>#终端3：启动slam导航节点</h3><p>ros2 launch turtlebot3_cartographer cartographer.launch.py use_sim_time:&#x3D;true publish_map_updates:&#x3D;true</p>
+<p>自动处理生命周期</p>
+<h3 id="终端4：自动处理生命周期"><a href="#终端4：自动处理生命周期" class="headerlink" title="#终端4：自动处理生命周期"></a>#终端4：自动处理生命周期</h3><p>ros2 launch nav2_bringup bringup_launch.py \  use_sim_time:&#x3D;True \  map:&#x3D;&#x2F;home&#x2F;linsen&#x2F;turtlebot3_map_final.yaml \  autostart:&#x3D;True</p>
+<h3 id="路径规划中断措施"><a href="#路径规划中断措施" class="headerlink" title="路径规划中断措施"></a>路径规划中断措施</h3><p>ros2 run rqt_lifecycle rqt_lifecycle  # 图形化状态管理（生命周期可视化工具）</p>
+<p>ros2 lifecycle set &#x2F;planner_server configure  # 将节点切换到配置状态<br>ros2 lifecycle set &#x2F;planner_server activate  # 激活节点（开始运行）</p>
+<h3 id="查看地图文件"><a href="#查看地图文件" class="headerlink" title="查看地图文件"></a>查看地图文件</h3><p>eog $(dirname &#x2F;home&#x2F;linsen&#x2F;turtlebot3_map_final.yaml)&#x2F;$(grep image turtlebot3_map_final.yaml | awk ‘{print $2}’)</p>
+<h2 id="自动导航流程"><a href="#自动导航流程" class="headerlink" title="自动导航流程"></a>自动导航流程</h2><h3 id="1-坐标初始化"><a href="#1-坐标初始化" class="headerlink" title="1.坐标初始化"></a>1.坐标初始化</h3><p>ros2 topic pub &#x2F;initialpose geometry_msgs&#x2F;msg&#x2F;PoseWithCovarianceStamped “{<br>  header: {frame_id: ‘map’},<br>  pose: {pose: {position: {x: 1.0, y: 1.0}, orientation: {z: 0.0, w: 1.0}}}<br>}”</p>
+<h3 id="2-map-odom转化"><a href="#2-map-odom转化" class="headerlink" title="2.map&#x3D;&gt;odom转化"></a>2.map&#x3D;&gt;odom转化</h3><p>ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom</p>
+<h3 id="3-仿真启动"><a href="#3-仿真启动" class="headerlink" title="3.仿真启动"></a>3.仿真启动</h3><p>ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py</p>
+<h3 id="4-导航、地图初始化"><a href="#4-导航、地图初始化" class="headerlink" title="4.导航、地图初始化"></a>4.导航、地图初始化</h3><p>ros2 launch turtlebot3_navigation2 navigation2.launch.py   use_sim_time:&#x3D;True   map:&#x3D;$HOME&#x2F;turtlebot3_map_final.yaml</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ROS/" class="print-no-link">#ROS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ROS系统环境搭建</div>
+      <div>https://shuzhanboke.github.io/2024/07/15/四足机器人独立开发/ROS仿真环境搭建/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/15/%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91/Giscus/" title="giscus评论系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">giscus评论系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/15/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/ROS%E4%BB%BF%E7%9C%9F%E7%B3%BB%E7%BB%9F+slam%E6%89%AB%E5%9B%BE+%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/" title="ros仿真系统搭建">
+                        <span class="hidden-mobile">ros仿真系统搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"shuzhanboke/shuzhanboke.github.io","repo-id":"R_kgDOPIELFA","category":"Announcements","category-id":"DIC_kwDOPIELFM4Csle3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

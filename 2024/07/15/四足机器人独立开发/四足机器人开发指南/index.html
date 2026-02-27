@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="四足机器人开发指南要开发一个完整的四足机器狗实现自动避障和自主导航，需要系统性地整合硬件和软件组件。以下是专业级的开发框架指南：  一、硬件系统（模块化选型）1. 核心运动硬件   组件 推荐型号&#x2F;规格 作用    主控制器 NVIDIA Jetson AGX Orin&#x2F;Intel NUC 11 处理导航算法与实时控制   电机驱动器 MIT Mini Cheetah驱动器&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四足机器人开发指南">
+<meta property="og:url" content="https://shuzhanboke.github.io/2024/07/15/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="四足机器人开发指南要开发一个完整的四足机器狗实现自动避障和自主导航，需要系统性地整合硬件和软件组件。以下是专业级的开发框架指南：  一、硬件系统（模块化选型）1. 核心运动硬件   组件 推荐型号&#x2F;规格 作用    主控制器 NVIDIA Jetson AGX Orin&#x2F;Intel NUC 11 处理导航算法与实时控制   电机驱动器 MIT Mini Cheetah驱动器&amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shuzhanboke.github.io/img/robot.png">
+<meta property="article:published_time" content="2024-07-15T02:41:19.000Z">
+<meta property="article:modified_time" content="2025-07-15T09:12:54.836Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="ROS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shuzhanboke.github.io/img/robot.png">
+  
+  
+  
+  <title>四足机器人开发指南 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"shuzhanboke.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>不记来时路,自嫌衣上尘</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="四足机器人开发指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-15 10:41" pubdate>
+          2024年7月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          914 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">四足机器人开发指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="四足机器人开发指南"><a href="#四足机器人开发指南" class="headerlink" title="四足机器人开发指南"></a>四足机器人开发指南</h1><p>要开发一个完整的四足机器狗实现自动避障和自主导航，需要系统性地整合硬件和软件组件。以下是专业级的开发框架指南：</p>
+<hr>
+<h3 id="一、硬件系统（模块化选型）"><a href="#一、硬件系统（模块化选型）" class="headerlink" title="一、硬件系统（模块化选型）"></a><strong>一、硬件系统（模块化选型）</strong></h3><h4 id="1-核心运动硬件"><a href="#1-核心运动硬件" class="headerlink" title="1. 核心运动硬件"></a><strong>1. 核心运动硬件</strong></h4><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>推荐型号&#x2F;规格</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>主控制器</strong></td>
+<td>NVIDIA Jetson AGX Orin&#x2F;Intel NUC 11</td>
+<td>处理导航算法与实时控制</td>
+</tr>
+<tr>
+<td><strong>电机驱动器</strong></td>
+<td>MIT Mini Cheetah驱动器&#x2F;TMOTOR AK60-6</td>
+<td>高带宽腿部伺服控制</td>
+</tr>
+<tr>
+<td><strong>关节电机</strong></td>
+<td>高扭矩无刷电机（如T-Motor U8）</td>
+<td>提供精确的关节力矩控制</td>
+</tr>
+<tr>
+<td><strong>IMU</strong></td>
+<td>BMI088&#x2F;BMI085 + ADIS16470（冗余设计）</td>
+<td>姿态估计与运动稳定性</td>
+</tr>
+</tbody></table>
+<h4 id="2-感知传感器"><a href="#2-感知传感器" class="headerlink" title="2. 感知传感器"></a><strong>2. 感知传感器</strong></h4><table>
+<thead>
+<tr>
+<th>传感器类型</th>
+<th>推荐方案</th>
+<th>性能要求</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>主激光雷达</strong></td>
+<td>Livox Mid-40&#x2F;Velodyne VLP-16</td>
+<td>360°扫描，10Hz以上更新率</td>
+</tr>
+<tr>
+<td><strong>辅助深度相机</strong></td>
+<td>Intel RealSense D455&#x2F;OAK-D Pro</td>
+<td>RGB-D，全局快门，&lt;5ms延时</td>
+</tr>
+<tr>
+<td><strong>超声波传感器</strong></td>
+<td>MaxBotix MB1242</td>
+<td>近距离盲区检测（30-500cm）</td>
+</tr>
+<tr>
+<td><strong>接触传感器</strong></td>
+<td>六轴力传感器（如OnRobot HEX-E）</td>
+<td>足端触地检测与力控</td>
+</tr>
+</tbody></table>
+<h4 id="3-电源与通信"><a href="#3-电源与通信" class="headerlink" title="3. 电源与通信"></a><strong>3. 电源与通信</strong></h4><ul>
+<li><strong>电池系统</strong>：12S锂聚合物电池（50C放电）+ 分布式电源管理模块</li>
+<li><strong>通信模块</strong>：WiFi 6（AX200）+ 4G LTE双冗余链路</li>
+</ul>
+<hr>
+<h3 id="二、软件架构（ROS-2-Humble）"><a href="#二、软件架构（ROS-2-Humble）" class="headerlink" title="二、软件架构（ROS 2 Humble）"></a><strong>二、软件架构（ROS 2 Humble）</strong></h3><h4 id="1-核心功能包"><a href="#1-核心功能包" class="headerlink" title="1. 核心功能包"></a><strong>1. 核心功能包</strong></h4><pre><code class=" mermaid">graph TB
+    A[运动控制] --&gt;|LCM协议| B[MIT Cheetah Software]
+    C[环境感知] --&gt;|PointCloud2| D[Fast-LIO2]
+    D --&gt;|位姿| E[Voxgraph SLAM]
+    E --&gt;|地图| F[TeB Planner]
+    F --&gt;|控制指令| A
+</code></pre>
+
+<h4 id="2-关键算法选型"><a href="#2-关键算法选型" class="headerlink" title="2. 关键算法选型"></a><strong>2. 关键算法选型</strong></h4><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>推荐算法&#x2F;框架</th>
+<th>优化方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>状态估计</strong></td>
+<td>Contact-IMU-EKF</td>
+<td>融合足端接触检测</td>
+</tr>
+<tr>
+<td><strong>SLAM</strong></td>
+<td>Voxgraph + FAST-LIO2</td>
+<td>多传感器紧耦合</td>
+</tr>
+<tr>
+<td><strong>运动规划</strong></td>
+<td>Convex MPC + RaiSim仿真</td>
+<td>动态地形适应</td>
+</tr>
+<tr>
+<td><strong>避障</strong></td>
+<td>3D动态障碍物预测（使用PyTorch）</td>
+<td>时空联合推理</td>
+</tr>
+</tbody></table>
+<h4 id="3-开发工具链"><a href="#3-开发工具链" class="headerlink" title="3. 开发工具链"></a><strong>3. 开发工具链</strong></h4><ul>
+<li><strong>仿真环境</strong>：Isaac Sim + ROS 2 Bridge</li>
+<li><strong>调试工具</strong>：PlotJuggler + Foxglove Studio</li>
+<li><strong>CI&#x2F;CD</strong>：GitLab Runner + Docker容器化部署</li>
+</ul>
+<hr>
+<h3 id="三、系统集成要点"><a href="#三、系统集成要点" class="headerlink" title="三、系统集成要点"></a><strong>三、系统集成要点</strong></h3><h4 id="1-时间同步方案"><a href="#1-时间同步方案" class="headerlink" title="1. 时间同步方案"></a><strong>1. 时间同步方案</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># PTP精密时间协议配置</span><br><span class="hljs-built_in">sudo</span> apt install linuxptp<br><span class="hljs-built_in">sudo</span> ptp4l -i eth0 -S -m<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-实时性保障"><a href="#2-实时性保障" class="headerlink" title="2. 实时性保障"></a><strong>2. 实时性保障</strong></h4><ul>
+<li>内核补丁：<code>RT_PREEMPT</code>补丁 + Xenomai3</li>
+<li>进程优先级策略：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sched_param</span> <span class="hljs-title">param</span> =</span> &#123;.sched_priority = <span class="hljs-number">99</span>&#125;;<br>sched_setscheduler(<span class="hljs-number">0</span>, SCHED_FIFO, &amp;param);<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-安全机制"><a href="#3-安全机制" class="headerlink" title="3. 安全机制"></a><strong>3. 安全机制</strong></h4><ul>
+<li>硬件看门狗：STM32独立监控核心</li>
+<li>软件心跳包：自定义ROS 2 Lifecycle Manager</li>
+</ul>
+<hr>
+<h3 id="四、开发路线图（分阶段实现）"><a href="#四、开发路线图（分阶段实现）" class="headerlink" title="四、开发路线图（分阶段实现）"></a><strong>四、开发路线图（分阶段实现）</strong></h3><ol>
+<li><p><strong>Phase 1（基础运动）</strong></p>
+<ul>
+<li>实现基于MIT Cheetah代码库的步态控制</li>
+<li>在RaiSim中验证斜坡行走能力</li>
+</ul>
+</li>
+<li><p><strong>Phase 2（环境感知）</strong></p>
+<ul>
+<li>搭建Fast-LIO2的实时点云处理管线</li>
+<li>开发基于TSDF的3D代价地图</li>
+</ul>
+</li>
+<li><p><strong>Phase 3（自主导航）</strong></p>
+<ul>
+<li>集成Chomp+TeB的混合规划器</li>
+<li>实现动态障碍物速度障碍法（VO）避障</li>
+</ul>
+</li>
+<li><p><strong>Phase 4（系统优化）</strong></p>
+<ul>
+<li>部署量化后的PyTorch避障模型（TensorRT加速）</li>
+<li>通过ISAAC SIM进行百万次蒙特卡洛测试</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="五、关键挑战与解决方案"><a href="#五、关键挑战与解决方案" class="headerlink" title="五、关键挑战与解决方案"></a><strong>五、关键挑战与解决方案</strong></h3><table>
+<thead>
+<tr>
+<th>挑战点</th>
+<th>技术方案</th>
+<th>实施案例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>动态地形适应</strong></td>
+<td>在线足端轨迹优化（LQR调节）</td>
+<td>ANYmal野外行走</td>
+</tr>
+<tr>
+<td><strong>多传感器标定</strong></td>
+<td>基于AprilTag的自动标定系统</td>
+<td>Boston Dynamics Atlas</td>
+</tr>
+<tr>
+<td><strong>计算资源竞争</strong></td>
+<td>ROS 2 QoS策略+DPDK加速</td>
+<td>MIT Mini Cheetah 2</td>
+</tr>
+<tr>
+<td><strong>电池管理</strong></td>
+<td>自适应运动功耗调节算法</td>
+<td>Spot的Thermal Throttling</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="六、成本估算（参考）"><a href="#六、成本估算（参考）" class="headerlink" title="六、成本估算（参考）"></a><strong>六、成本估算（参考）</strong></h3><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>中端配置预算（USD）</th>
+<th>高端配置预算（USD）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>机械结构</td>
+<td>8,000</td>
+<td>25,000</td>
+</tr>
+<tr>
+<td>电子系统</td>
+<td>6,500</td>
+<td>18,000</td>
+</tr>
+<tr>
+<td>软件开发</td>
+<td>15,000</td>
+<td>50,000+</td>
+</tr>
+<tr>
+<td>测试验证</td>
+<td>5,000</td>
+<td>20,000</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="七、推荐学习资源"><a href="#七、推荐学习资源" class="headerlink" title="七、推荐学习资源"></a><strong>七、推荐学习资源</strong></h3><ol>
+<li><p><strong>代码库</strong>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mit-biomimetics/Cheetah-Software">MIT Cheetah Software</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hku-mars/FAST_LIO">Fast-LIO2</a></li>
+</ul>
+</li>
+<li><p><strong>论文</strong>：</p>
+<ul>
+<li>《Dynamic Locomotion in the MIT Cheetah 3》</li>
+<li>《Robust Legged Navigation》</li>
+</ul>
+</li>
+<li><p><strong>课程</strong>：</p>
+<ul>
+<li>ETH Zurich《Advanced Robotics》</li>
+<li>Coursera《Robotics: Perception》</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>通过以上框架，您可以系统性地构建一个具备工业级性能的四足机器人系统。实际开发中建议优先在仿真环境中验证核心算法（Isaac Sim或Gazebo+ROS 2），再逐步迁移到实体机器人。对于初创团队，可考虑使用Unitree Go1等开发平台加速原型验证。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ROS/" class="print-no-link">#ROS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>四足机器人开发指南</div>
+      <div>https://shuzhanboke.github.io/2024/07/15/四足机器人独立开发/四足机器人开发指南/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/15/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/ROS%E4%BB%BF%E7%9C%9F%E7%B3%BB%E7%BB%9F+slam%E6%89%AB%E5%9B%BE+%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/" title="ros仿真系统搭建">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ros仿真系统搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/15/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/%E5%9B%9B%E8%B6%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%A1%AC%E4%BB%B6%E6%94%AF%E6%8C%81/" title="四足机器人仿真环境硬件支持">
+                        <span class="hidden-mobile">四足机器人仿真环境硬件支持</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"shuzhanboke/shuzhanboke.github.io","repo-id":"R_kgDOPIELFA","category":"Announcements","category-id":"DIC_kwDOPIELFM4Csle3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
